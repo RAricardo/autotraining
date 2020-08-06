@@ -23,7 +23,7 @@
   <test thread-count="5" name="Exercise-1-2">
   	<groups>
   		<run>
-  			<!-- <include name="exercise1"/> -->
+  			<include name="exercise1"/>
   			<include name="exercise2"/>
   		</run>
   	</groups>
