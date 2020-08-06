@@ -23,7 +23,7 @@ public class FlightSearchPage extends BasePage {
 	
 	public FlightSearchPage(WebDriver pDriver) {
 		super(pDriver);
-		closePopUps();
+		closePopUp(2);
 	}
 
 	public ArrayList<String> getSortDropdownContents(){
@@ -107,7 +107,6 @@ public class FlightSearchPage extends BasePage {
 		WebElement noThanksHotel = getDriver().findElement(By.id("forcedChoiceNoThanks"));
 		getWait().until(ExpectedConditions.elementToBeClickable(noThanksHotel));
 		noThanksHotel.click();
-		
 		ArrayList<String> tabs = new ArrayList<String> (getDriver().getWindowHandles());
 	    getDriver().switchTo().window(tabs.get(1));
 		return new FlightInfoPage(getDriver());

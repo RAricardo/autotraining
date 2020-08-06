@@ -1,13 +1,15 @@
 package com.automation.training.autotraining.pages;
 
 import java.util.Iterator;
-
+import java.util.Set;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.TimeoutException;
 
 public abstract class BasePage {
 	private  WebDriver driver;
@@ -33,14 +35,6 @@ public abstract class BasePage {
 		return actions;
 	}
 	
-	protected void closePopUps() {
-		Iterator<String> handles = getDriver().getWindowHandles().iterator();
-		String current = handles.next();
-		getDriver().switchTo().window(handles.next());
-		getDriver().close();
-		getDriver().switchTo().window(current);
-	}
-	
 	public String pageTitle() {
 		return driver.getTitle();
 	}
@@ -50,4 +44,28 @@ public abstract class BasePage {
 			driver.quit();
 		}
 	}
+	
+	protected void closePopUp(int number) {
+		//Close PopUp and wait for results
+		String firstTab = driver.getWindowHandle();
+		boolean flag = waitForNewWindow(number);
+		if (flag) {
+			String subWindowHandler="";
+			Set<String> handles = driver.getWindowHandles();
+			Iterator<String> iterator = handles.iterator(); 
+			while (iterator.hasNext()){ subWindowHandler = iterator.next(); } 
+			driver.switchTo().window(subWindowHandler);
+			driver.close();
+			driver.switchTo().window(firstTab);
+		}
+	}
+	
+	private boolean waitForNewWindow( int number){
+		try {
+			getWait().until(ExpectedConditions.numberOfWindowsToBe(number));
+		} catch (TimeoutException e) {
+			return false;
+		}
+        return true;
+    }
 }

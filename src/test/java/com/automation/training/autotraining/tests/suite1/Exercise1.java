@@ -5,8 +5,9 @@ import static org.testng.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.junit.BeforeClass;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
@@ -25,21 +26,21 @@ public class Exercise1 {
 	private FlightInfoPage infoPage;
 	private FlightCheckOutPage checkoutPage;
 	
-	@BeforeSuite
+	@BeforeSuite(groups = {"exercise1"})
 	@Parameters({"browser"})
 	public void beforeSuite(String browser) {
 		driver = new MyDriver(browser);
 		homePage = new TravelHomePage(driver.getDriver());
 	}
 	
-	@BeforeTest
+	@BeforeTest (groups = {"exercise1"})
 	@Parameters({"from-location", "to-location","departure-date","returning-date","adult-num"})
 	public void SearchFlight(String from, String to, String departure, String returning, String adnum) {
 		 searchPage = homePage.searchFlight(from, to, departure, returning, adnum);
 		 searchPage.flightListLoadedWait();
 	}
 	
-	@Test
+	@Test (groups = {"exercise1"})
 	/*
 	 * Must confirm that a dropdown box that lets you order by price, departure, arrival and duration exists.
 	 */
@@ -58,7 +59,7 @@ public class Exercise1 {
 		assertTrue(ddContents.containsAll(testDropdown));
 	}
 	
-	@Test
+	@Test (groups = {"exercise1"})
 	/*
 	 * Compares flight listings size to select buttons count in order to verify that each listing contains a select button.
 	 */
@@ -66,7 +67,7 @@ public class Exercise1 {
 		assertEquals(searchPage.flightListCount(),searchPage.selectButtonsCount());
 	}
 	
-	@Test
+	@Test (groups = {"exercise1"})
 	/*
 	 * Compares flight listings size to duration tags count in order to verify that each listing contains a duration tag.
 	 */
@@ -74,7 +75,7 @@ public class Exercise1 {
 		assertEquals(searchPage.flightListCount(),searchPage.flightDurationsCount());
 	}
 	
-	@Test
+	@Test (groups = {"exercise1"})
 	/*
 	 * Compares flight listings size to details and baggage fees links count in order to verify
 	 * that each listing contains a details and baggage fees link.
@@ -83,7 +84,7 @@ public class Exercise1 {
 		assertEquals(searchPage.flightListCount(),searchPage.flightDetailsAndFeesCount());
 	}
 	
-	@Test (dependsOnMethods={"verifySelectButtons", "verifyDurationTags", "verifyDetailsAndFees"})
+	@Test (groups = {"exercise1"}, dependsOnMethods={"verifySelectButtons", "verifyDurationTags", "verifyDetailsAndFees"})
 	/*
 	 * Sorts flights by shorter durations using the page sorting dropdown, then checks
 	 * if returned array containing flight durations is sorted by shorter durations.
@@ -96,7 +97,7 @@ public class Exercise1 {
 	    assertTrue(copy.equals(durations));
 	}
 	
-	@Test (dependsOnMethods= {"verifySortByDurationShorter"})
+	@Test (groups = {"exercise1"},dependsOnMethods= {"verifySortByDurationShorter"})
 	/*
 	 * Selects flight departure and returning dates, opening the flights details page verifies page total price, 
 	 * price guarantee tag and departing/returning information.
@@ -110,7 +111,7 @@ public class Exercise1 {
 		assertEquals(infoPage.getTotalPrice(), "packagePriceTotal");
 	}
 	
-	@Test(dependsOnMethods={"verifyTripDetailsPage"})
+	@Test(groups = {"exercise1"},dependsOnMethods={"verifyTripDetailsPage"})
 	/*
 	 * Clicks Book Flight Button and proceeds to perform 5 validations to verify CheckOutPage is loaded.
 	 */
@@ -123,10 +124,11 @@ public class Exercise1 {
 		assertEquals(checkoutPage.getPageHeader(),"Secure booking - only takes a few minutes!");
 	}
 	
-	@AfterSuite
+	@AfterClass (groups = {"exercise1"})
 	public void dispose() {
 		homePage.dispose();
 		searchPage.dispose();
 		infoPage.dispose();
+		checkoutPage.dispose();
 	}
 }

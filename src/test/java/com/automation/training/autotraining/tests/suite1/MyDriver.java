@@ -10,7 +10,6 @@ import org.openqa.selenium.safari.SafariDriver;
 public class MyDriver {
 	private WebDriver driver;
 	
-	
 	public MyDriver(String browser) {
 		switch(browser) {
 		case "chrome":

@@ -2,6 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Testing Suite">
 <parameter name="browser" value="chrome"/>
+<!-- Exercise 1 -->
 <parameter name="from-location" value="LAS"/>
 <parameter name="to-location" value="LAX"/>
 <parameter name="departure-date" value="2020/10/5"/>
@@ -9,9 +10,27 @@
 <parameter name="adult-num" value="1"/>
 <parameter name="departure-option" value="1"/>
 <parameter name="return-option" value="3"/>
-  <test thread-count="5" name="Exercise 1">
+<!--  -->
+<!-- Exercise 2 -->
+<parameter name="from-location-2" value="LAS"/>
+<parameter name="to-location-2" value="LAX"/>
+<parameter name="departure-date-2" value="2020/10/5"/>
+<parameter name="returning-date-2" value="2020/10/18"/>
+<parameter name="adult-num-2" value="1"/>
+<parameter name="departure-option" value="1"/>
+<parameter name="return-option" value="3"/>
+<!--  -->
+  <test thread-count="5" name="Exercise-1-2">
+  	<groups>
+  		<run>
+  			<include name="exercise1"/>
+  			<!--<include name="exercise2"/>-->
+  		</run>
+  	</groups>
   	<classes>
   		<class name="com.automation.training.autotraining.tests.suite1.Exercise1">
+  		</class>
+  		<class name="com.automation.training.autotraining.tests.suite1.Exercise2">
   		</class>
   	</classes>
   </test> <!-- Test -->
