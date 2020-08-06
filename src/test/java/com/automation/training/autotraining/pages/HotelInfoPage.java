@@ -1,6 +1,6 @@
 package com.automation.training.autotraining.pages;
 
-import java.awt.List;
+import java.util.List;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
@@ -54,12 +54,13 @@ public class HotelInfoPage extends BasePage {
 	}
 	
 	public FlightSearchPage chooseARoom() {
-		ArrayList<WebElement> rooms;
+		List<WebElement> rooms;
 		if(!roomListing.findElements(By.cssSelector("a[data-control='modal']")).isEmpty()) {
-			rooms = new ArrayList<WebElement>(roomListing.findElements(By.cssSelector("a[data-control='modal']")));
+			rooms = roomListing.findElements(By.cssSelector("a[data-control='modal']"));
 			rooms.get(0).click();
+			System.out.println("asdas");
 		} else if (!roomListing.findElements(By.cssSelector(".room-price-book-button-wrapper a[role='button']")).isEmpty()) {
-			rooms = new ArrayList<WebElement>(roomListing.findElements(By.cssSelector(".room-price-book-button-wrapper a[role='button']")));
+			rooms = roomListing.findElements(By.cssSelector(".room-price-book-button-wrapper a[role='button']"));
 			rooms.get(0).click();
 		}
 		
@@ -67,7 +68,6 @@ public class HotelInfoPage extends BasePage {
 			WebElement modal = getDriver().findElement(By.id("covid-alert-refundability-0"));
 			modal.findElement(By.cssSelector("a[data-track-page='HOT.PHIS.NonRefundable.Continue']")).click();
 		}
-		
 		return new FlightSearchPage(getDriver());
 	}
 

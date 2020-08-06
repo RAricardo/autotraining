@@ -23,10 +23,11 @@ public class FlightSearchPage extends BasePage {
 	
 	public FlightSearchPage(WebDriver pDriver) {
 		super(pDriver);
-		closePopUp(2);
+		
 	}
 
 	public ArrayList<String> getSortDropdownContents(){
+		closePopUp(2);
 		ArrayList<String> ddContents = new ArrayList<String>();
 		getWait().until(ExpectedConditions.elementToBeClickable(sortDropdown));
 		List<WebElement> options=sortDropdown.findElements(By.tagName("option"));
@@ -110,5 +111,22 @@ public class FlightSearchPage extends BasePage {
 		ArrayList<String> tabs = new ArrayList<String> (getDriver().getWindowHandles());
 	    getDriver().switchTo().window(tabs.get(1));
 		return new FlightInfoPage(getDriver());
+	}
+	
+	/*
+	 * @Departure date option index
+	 * @Return date option index
+	 */
+	public PackageInfoPage selectFlightsPackage(int departureOption, int returnOption) {
+		clickSelectButton(departureOption);
+		flightListLoadedWait();
+		System.out.println(selectButtons().get(returnOption-1).getAttribute("id"));
+		clickSelectButton(returnOption);
+		WebElement noThanksHotel = getDriver().findElement(By.id("forcedChoiceNoThanks"));
+		getWait().until(ExpectedConditions.elementToBeClickable(noThanksHotel));
+		noThanksHotel.click();
+		ArrayList<String> tabs = new ArrayList<String> (getDriver().getWindowHandles());
+	    getDriver().switchTo().window(tabs.get(1));
+		return new PackageInfoPage(getDriver());
 	}
 }

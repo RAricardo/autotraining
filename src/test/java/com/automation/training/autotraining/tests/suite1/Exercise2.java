@@ -16,6 +16,7 @@ import com.automation.training.autotraining.pages.FlightInfoPage;
 import com.automation.training.autotraining.pages.FlightSearchPage;
 import com.automation.training.autotraining.pages.HotelInfoPage;
 import com.automation.training.autotraining.pages.HotelSearchPage;
+import com.automation.training.autotraining.pages.PackageInfoPage;
 import com.automation.training.autotraining.pages.TravelHomePage;
 
 public class Exercise2 {
@@ -24,7 +25,7 @@ public class Exercise2 {
 	private HotelSearchPage hotelPage;
 	private HotelInfoPage hotelInfo; 
 	private FlightSearchPage searchPage;
-	private FlightInfoPage infoPage;
+	private PackageInfoPage infoPage;
 	private FlightCheckOutPage checkoutPage;
 	
 	@BeforeClass (groups = {"exercise2"})
@@ -89,13 +90,21 @@ public class Exercise2 {
 	
 	@Test (groups = {"exercise2"}, dependsOnMethods= {"verifyThreeStarSelection"})
 	/*
-	 * Chooses a room, departure and returning dates, selects and runs validations on trip details page.
+	 * Chooses a room, departure and returning dates, adds a car, selects and runs validations on trip details page.
 	 */
 	@Parameters({"departure-option", "return-option"})
 	public void verifyTripDetails(int departureOption, int returnOption) {
 		searchPage = hotelInfo.chooseARoom();
 		searchPage.flightListLoadedWait();
-		infoPage = searchPage.selectFlights(departureOption, returnOption);
+		infoPage = searchPage.selectFlightsPackage(departureOption, returnOption);
+		infoPage.addCar();
+		assertEquals("Mon, Oct 5 -to Sun, Oct 18 ", infoPage.getDepartureDates());
+		assertEquals("Stay flexible with no change fees", infoPage.getStayFlexibleMessage());
+		assertEquals("We recommend booking a flight with no change fees in case your plans change.",
+				infoPage.getRecommendationMessage());
+		assertEquals("Change flights", infoPage.getChangeFlightsBtn());
+		assertEquals("Next: Final Details", infoPage.getFinalDetailsLabel());
+		infoPage.pressFinalDetails();
 	}
 	
 	@AfterClass (groups = {"exercise2"})
